@@ -55,6 +55,11 @@ export function RecordInventory({ files }: RecordInventoryProps) {
     }
   }, [allPageSelected, pageIds, selected]);
 
+  const openRecord = (fileId: number) => {
+    setOpenId(fileId);
+    setDocumentId(null);
+  };
+
   const toggle = (fileId: number) => {
     setAuditNote('');
     setSelected((current) => (current.includes(fileId) ? current.filter((id) => id !== fileId) : [...current, fileId]));
@@ -232,15 +237,12 @@ export function RecordInventory({ files }: RecordInventoryProps) {
               <th scope="col">Retention policy</th>
               <th scope="col">Disposition date</th>
               <th scope="col">Owner</th>
-              <th scope="col">
-                <span className="sr-only">View metadata</span>
-              </th>
             </tr>
           </thead>
           <tbody>
             {pageRows.length === 0 ? (
               <tr>
-                <td colSpan={11}>No records match these filters.</td>
+                <td colSpan={10}>No records match these filters.</td>
               </tr>
             ) : null}
             {pageRows.map((file) => (
@@ -255,8 +257,30 @@ export function RecordInventory({ files }: RecordInventoryProps) {
                   />
                 </td>
                 <td>
-                  {recordName(file)}
-                  {recordOnHold(file) ? <span className="hold-note">On legal hold</span> : null}
+                  <div className="name-cell">
+                    <div>
+                      <button
+                        type="button"
+                        className="linkish"
+                        data-target-id={`RecordInventory-open-${file.id}`}
+                        aria-expanded={openId === file.id}
+                        onClick={() => openRecord(file.id)}
+                      >
+                        {recordName(file)}
+                      </button>
+                      {recordOnHold(file) ? <span className="hold-note">On legal hold</span> : null}
+                    </div>
+                    <button
+                      type="button"
+                      className="icon-button"
+                      data-target-id={`RecordInventory-view-${file.id}`}
+                      aria-label={`View metadata for ${recordName(file)}`}
+                      aria-expanded={openId === file.id}
+                      onClick={() => openRecord(file.id)}
+                    >
+                      <EyeIcon />
+                    </button>
+                  </div>
                 </td>
                 <td>{recordDocuments(file.id).length}</td>
                 <td>{file.recordType}</td>
@@ -266,21 +290,6 @@ export function RecordInventory({ files }: RecordInventoryProps) {
                 <td>{policyLabel(recordPolicyIds(file))}</td>
                 <td>{formatDisposition(file.dispositionUtc, file.dispositionText)}</td>
                 <td>{file.owner ?? '—'}</td>
-                <td>
-                  <button
-                    type="button"
-                    className="icon-button"
-                    data-target-id={`RecordInventory-view-${file.id}`}
-                    aria-label={`View metadata for ${recordName(file)}`}
-                    aria-expanded={openId === file.id}
-                    onClick={() => {
-                      setOpenId(file.id);
-                      setDocumentId(null);
-                    }}
-                  >
-                    <EyeIcon />
-                  </button>
-                </td>
               </tr>
             ))}
           </tbody>

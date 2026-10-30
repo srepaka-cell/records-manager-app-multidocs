@@ -136,7 +136,7 @@ button:disabled { opacity: 0.45; cursor: not-allowed; }
   background: #fff;
   border-left: 1px solid #e6e8ec;
   box-shadow: -8px 0 24px rgb(16 24 40 / 8%);
-  z-index: 20;
+  z-index: 40;
   padding: 20px 20px 40px;
 }
 .metadata-heading { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
@@ -358,6 +358,9 @@ button.legend-button {
 .field textarea { min-height: 88px; }
 
 .table-wrap { overflow-x: auto; background: #fff; border: 1px solid #e1e6eb; border-radius: 8px; }
+.name-cell { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; min-width: 180px; }
+.name-cell .linkish { font-weight: 650; text-align: start; }
+.metadata-panel { z-index: 40; }
 table { width: 100%; border-collapse: collapse; }
 th, td { text-align: start; padding: 10px 12px; border-bottom: 1px solid #e1e6eb; vertical-align: top; }
 th { background: #f7f9fb; font-size: 0.85rem; }
